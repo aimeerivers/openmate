@@ -10,6 +10,8 @@ include Wx
 VERSION = "0.0.1"
 Minimal_Quit = 1
 Minimal_About = ID_ABOUT
+Save_Menu = 2
+Load_Menu = 3
 Toggle_Whitespace = 5000
 Toggle_EOL = 5001
 
@@ -71,6 +73,8 @@ class MyFrame < Frame
     @sci.set_margin_sensitive(1,1)
 
     evt_menu(Minimal_Quit) {onQuit}
+    evt_menu(Save_Menu) {onSave}
+    evt_menu(Load_Menu) {onLoad}
     evt_menu(Minimal_About) {onAbout}
     evt_menu(Toggle_Whitespace) {onWhitespace}
     evt_menu(Toggle_EOL) {onEOL}
@@ -81,6 +85,8 @@ class MyFrame < Frame
   
   def setup_menu
     menuFile = Menu.new()
+    menuFile.append(Load_Menu, "&Load\tCtrl-O")
+    menuFile.append(Save_Menu, "&Save\tCtrl-S")
     menuFile.append(Minimal_Quit, "E&xit\tAlt-X", "Quit this program")
 
     menuView = Menu.new()
@@ -125,9 +131,21 @@ class MyFrame < Frame
   def onQuit
     close(TRUE)
   end
+  
+  def onSave
+  end
+
+  def onLoad
+    fd = Wx::FileDialog.new(self, "Choose a file to load")
+    if (fd.show_modal == Wx::ID_OK)
+      File.open(fd.get_path, "r") do |f|
+        @sci.set_text(f.read)
+      end
+    end
+  end
 
   def onAbout
-    GC.start
+    GC.start # nice :)
     msg =  sprintf("OpenMate.\n" \
     		   "Version %s", VERSION)
 
