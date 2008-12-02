@@ -1,11 +1,11 @@
 require 'rubygems'
-require 'wx'
-include Wx 
+require 'wx' 
 
 
-class MinimalApp < App
+class MinimalApp < Wx::App
   def on_init
-    Frame.new(nil, -1, "The Bare Minimum").show()
+    frame = Wx::Frame.new(nil, -1, "The Bare Minimum").show()
+    frame.show
   end
 end
 
