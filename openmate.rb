@@ -37,6 +37,11 @@ class MyFrame < Frame
     line_num_margin = @sci.text_width(STC_STYLE_LINENUMBER, "_99999")
     @sci.set_margin_width(0, line_num_margin)
     
+    #set styles
+    set_style
+    #keywords defined in the keywords method
+    @sci.set_key_words(0, keywords)
+    
     @sci.set_tab_width(4)
     @sci.set_use_tabs(false)
     @sci.set_tab_indents(true)
@@ -101,7 +106,7 @@ class MyFrame < Frame
     set_status_text(status)
   end
   
-  def set_style(default_fg, default_bg, line_num_fg, line_num_bg, line_indent)
+  def set_style
     @sci.style_set_foreground(STC_STYLE_DEFAULT, BLACK);
     @sci.style_set_background(STC_STYLE_DEFAULT, WHITE);
     @sci.style_set_foreground(STC_STYLE_LINENUMBER, LIGHT_GREY);
@@ -115,8 +120,6 @@ class MyFrame < Frame
     @sci.style_set_foreground(5, BLUE)
     @sci.style_set_foreground(6, BLUE)
     @sci.style_set_foreground(7, BLUE)
-    #keywords defined in the keywords method
-    @sci.set_key_words(0, keywords)
   end
   
   def onQuit
