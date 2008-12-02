@@ -1,3 +1,9 @@
 OpenMate - TextMate for everyone!
 
 Work in progress. Please fork and contribute!
+
+Prerequisite: wxruby
+sudo gem install wxruby
+
+To run:
+ruby openmate.rb
