@@ -150,6 +150,7 @@ class MyFrame < Frame
     if (fd.show_modal == Wx::ID_OK)
       File.open(fd.get_path, "r") do |f|
         @sci.set_text(f.read)
+        @notebook.add_page(@sci, File.basename(fd.get_path), true)
       end
     end
   end
