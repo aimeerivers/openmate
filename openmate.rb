@@ -26,8 +26,14 @@ class MyFrame < Frame
     #create status bar
     create_status_bar(2)
     
-    #setup StyledTextCtrl
-    @sci = Wx::StyledTextCtrl.new(self)
+    #setup notebook for tabs
+    @notebook = Wx::Notebook.new(self)
+    
+    #setup StyledTextCtrl and add to notebook
+    @sci = Wx::StyledTextCtrl.new(@notebook)
+    
+    #create a tab with title page for now
+    @notebook.add_page(@sci, "NEW FILE")
     
     font = Font.new(10, TELETYPE, NORMAL, NORMAL)
     @sci.style_set_font(STC_STYLE_DEFAULT, font);
@@ -110,6 +116,10 @@ class MyFrame < Frame
   
   def status=(status)
     set_status_text(status)
+  end
+  
+  def new_tab=(filename)
+    
   end
   
   def set_style
