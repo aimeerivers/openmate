@@ -88,6 +88,11 @@ class AppFrame < Frame
     menuView = Menu.new()
     menuView.append(Toggle_Whitespace, "Show &Whitespace\tF6", "Show Whitespace", ITEM_CHECK)
     menuView.append(Toggle_EOL, "Show &End of Line\tF7", "Show End of Line characters", ITEM_CHECK)
+    set_style_light = menuView.append("View style - Light", "Set view style to light")
+    set_style_dominion = menuView.append("View style - Dominion", "Set view style to Dominion")
+    
+    evt_menu(set_style_light) { set_view_style('Light') }
+    evt_menu(set_style_dominion) { set_view_style('Dominion') }
 
     menuHelp = Menu.new()
     menuHelp.append(Minimal_About, "&About...\tF1", "Show about dialog")
@@ -112,20 +117,25 @@ class AppFrame < Frame
     
   end
   
-  def set_style
-    @sci.style_set_foreground(STC_STYLE_DEFAULT, BLACK);
-    @sci.style_set_background(STC_STYLE_DEFAULT, WHITE);
+  def set_style(options={})
+    options[:text_colour] ||= 'black'
+    options[:background_colour] ||= 'white'
+    options[:comment_colour] ||= 'darkgray'
+    options[:keyword_colour] ||= 'blue'
+    options[:string_colour] ||= 'blue'
+    @sci.style_set_foreground(STC_STYLE_DEFAULT, Wx::Colour.new(options[:text_colour]));
+    @sci.style_set_background(STC_STYLE_DEFAULT, Wx::Colour.new(options[:background_colour]));
     @sci.style_set_foreground(STC_STYLE_LINENUMBER, LIGHT_GREY);
     @sci.style_set_background(STC_STYLE_LINENUMBER, WHITE);
     @sci.style_set_foreground(STC_STYLE_INDENTGUIDE, LIGHT_GREY);
     
     @sci.set_lexer(STC_LEX_RUBY)
     @sci.style_clear_all
-    @sci.style_set_foreground(2, RED)
+    @sci.style_set_foreground(2, Wx::Colour.new(options[:comment_colour]))
     @sci.style_set_foreground(3, GREEN)
-    @sci.style_set_foreground(5, BLUE)
-    @sci.style_set_foreground(6, BLUE)
-    @sci.style_set_foreground(7, BLUE)
+    @sci.style_set_foreground(5, Wx::Colour.new(options[:keyword_colour]))
+    @sci.style_set_foreground(6, Wx::Colour.new(options[:string_colour]))
+    @sci.style_set_foreground(7, Wx::Colour.new(options[:string_colour]))
   end
   
   def onQuit
@@ -162,6 +172,16 @@ class AppFrame < Frame
   def onEOL
     @eol_visible = !@eol_visible
     @sci.set_view_eol(@eol_visible)
+  end
+  
+  def set_view_style(style)
+    options = case style
+    when 'Light' then {:text_colour => 'black', :background_colour => 'white'}
+    when 'Dominion' then {:text_colour => '#B9ADD7', :background_colour => 'black',
+      :comment_colour => '#554D9D', :keyword_colour => '#5B55FE', :string_colour => '#83529D'}
+    else raise 'Unknown view style'
+    end
+    set_style(options)
   end
 
   def onCharadded(evt)
