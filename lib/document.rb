@@ -40,26 +40,41 @@ class Document < StyledTextCtrl
     
   end
   
-  def set_style
+  def set_style(options={})
     
     self.set_edge_mode(STC_EDGE_NONE)
     
-    self.style_set_foreground(STC_STYLE_DEFAULT, BLACK);
-    self.style_set_background(STC_STYLE_DEFAULT, WHITE);
+    options[:text_colour] ||= 'black'
+    options[:background_colour] ||= 'white'
+    options[:comment_colour] ||= 'darkgray'
+    options[:keyword_colour] ||= 'blue'
+    options[:string_colour] ||= 'blue'
+    self.style_set_foreground(STC_STYLE_DEFAULT, Wx::Colour.new(options[:text_colour]));
+    self.style_set_background(STC_STYLE_DEFAULT, Wx::Colour.new(options[:background_colour]));
     self.style_set_foreground(STC_STYLE_LINENUMBER, LIGHT_GREY);
     self.style_set_background(STC_STYLE_LINENUMBER, WHITE);
     self.style_set_foreground(STC_STYLE_INDENTGUIDE, LIGHT_GREY);
     
     self.set_lexer(STC_LEX_RUBY)
     self.style_clear_all
-    self.style_set_foreground(2, RED)
+    self.style_set_foreground(2, Wx::Colour.new(options[:comment_colour]))
     self.style_set_foreground(3, GREEN)
-    self.style_set_foreground(5, BLUE)
-    self.style_set_foreground(6, BLUE)
-    self.style_set_foreground(7, BLUE)
+    self.style_set_foreground(5, Wx::Colour.new(options[:keyword_colour]))
+    self.style_set_foreground(6, Wx::Colour.new(options[:string_colour]))
+    self.style_set_foreground(7, Wx::Colour.new(options[:string_colour]))
     
     font = Font.new(10, TELETYPE, NORMAL, NORMAL)
     self.style_set_font(STC_STYLE_DEFAULT, font);
+  end
+  
+  def set_view_style(style)
+    options = case style
+    when 'Light' then {:text_colour => 'black', :background_colour => 'white'}
+    when 'Dominion' then {:text_colour => '#B9ADD7', :background_colour => 'black',
+      :comment_colour => '#554D9D', :keyword_colour => '#5B55FE', :string_colour => '#83529D'}
+    else raise 'Unknown view style'
+    end
+    set_style(options)
   end
   
   def keywords
