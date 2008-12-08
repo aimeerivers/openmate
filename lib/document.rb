@@ -3,10 +3,16 @@ require File.expand_path(File.dirname(__FILE__) + '/../required_libs.rb')
 
 class Document < StyledTextCtrl
   
+  attr :file_name
+  
   def initialize(*args)
     super
+    
+    @file_name = "Untitled"
+    
     line_num_margin = self.text_width(STC_STYLE_LINENUMBER, "_99999")
     self.set_margin_width(0, line_num_margin)
+    
     #keywords defined in the keywords method
     self.set_key_words(0, keywords)
     
@@ -64,6 +70,10 @@ class Document < StyledTextCtrl
   
   def keywords
     "begin break elsif module retry unless end case next return until class ensure nil self when def false not super while alias defined? for or then yield and do if redo true else in rescue undef"
+  end
+  
+  def open
+    
   end
   
 end
