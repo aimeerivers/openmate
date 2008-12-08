@@ -75,7 +75,7 @@ class AppFrame < Frame
     @document = Document.new(@notebook)
     
     #create a tab with title page for now
-    @notebook.add_page(@document, "Untitled")
+    @notebook.add_page(@document, @document.file_name)
     
     #set styles
     @document.set_style({})
