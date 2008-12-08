@@ -1,15 +1,9 @@
 #!/usr/bin/env ruby
 
-begin
-  require 'rubygems' 
-rescue LoadError
-end
-require 'wx'
-require 'gui/gui_frame'
-include Wx
+require File.expand_path(File.dirname(__FILE__) + '/required_libs.rb')
 
-VERSION = "0.0.1"
-Minimal_Quit = 1
+New_Menu = 1
+Minimal_Quit = 4
 Minimal_About = ID_ABOUT
 Save_Menu = 2
 Load_Menu = 3
@@ -19,7 +13,7 @@ Toggle_EOL = 5001
 
 class MainApp < App
   def on_init
-    frame = AppFrame.new("OpenMate",Point.new(50, 50), Size.new(500, 500))
+    frame = AppFrame.new("OpenMate",Point.new(50, 50), Size.new(800, 600))
     frame.show(TRUE)
   end
 end
