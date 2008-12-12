@@ -7,3 +7,5 @@ sudo gem install wxruby
 
 To run:
 ruby openmate.rb
+
+Please report any bugs to http://openmate.lighthouseapp.com/
