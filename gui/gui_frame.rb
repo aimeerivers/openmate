@@ -70,17 +70,18 @@ class AppFrame < Frame
     @document = Document.new(@notebook)
     
     #create a tab with title page for now
-    @notebook.add_page(@document, @document.file_name)
+    @notebook.add_page(@document, @document.file_name, true, -1)
     
     #set styles
     @document.set_style
+
   end
   
   def onSave
   end
 
   def onOpen
-    fd = Wx::FileDialog.new(self, "Choose a file to load")
+    fd = Wx::FileDialog.new(self, "Choose a file to open")
     if (fd.show_modal == Wx::ID_OK)
       File.open(fd.get_path, "r") do |file|
         document = Document.new(@notebook)
