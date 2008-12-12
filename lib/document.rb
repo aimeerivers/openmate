@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../required_libs.rb')
 
 class Document < StyledTextCtrl
   
-  attr :file_name
+  attr_accessor :file_name
   
   def initialize(*args)
     super
@@ -72,8 +72,11 @@ class Document < StyledTextCtrl
     "begin break elsif module retry unless end case next return until class ensure nil self when def false not super while alias defined? for or then yield and do if redo true else in rescue undef"
   end
   
-  def open
-    
+  def open(notebook, file, file_path=nil)
+    @file_name = File.basename(file_path)
+    self.set_key_words(0, keywords)
+    set_style
+    self.set_text(file.read)
   end
   
 end

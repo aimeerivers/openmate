@@ -22,7 +22,7 @@ class AppFrame < Frame
     evt_menu(Minimal_Quit) {onQuit}
     evt_menu(New_Menu) {onNew}
     evt_menu(Save_Menu) {onSave}
-    evt_menu(Load_Menu) {onLoad}
+    evt_menu(Open_Menu) {onOpen}
     evt_menu(Minimal_About) {onAbout}
     evt_menu(Toggle_Whitespace) {onWhitespace}
     evt_menu(Toggle_EOL) {onEOL}
@@ -34,7 +34,7 @@ class AppFrame < Frame
   def setup_menu
     menuFile = Menu.new()
     menuFile.append(New_Menu, "&New\tCtrl-N")
-    menuFile.append(Load_Menu, "&Load\tCtrl-O")
+    menuFile.append(Open_Menu, "&Open\tCtrl-O")
     menuFile.append(Save_Menu, "&Save\tCtrl-S")
     menuFile.append(Minimal_Quit, "E&xit\tAlt-X", "Quit this program")
 
@@ -79,12 +79,13 @@ class AppFrame < Frame
   def onSave
   end
 
-  def onLoad
+  def onOpen
     fd = Wx::FileDialog.new(self, "Choose a file to load")
     if (fd.show_modal == Wx::ID_OK)
-      File.open(fd.get_path, "r") do |f|
-        @document.set_text(f.read)
-        @notebook.add_page(@document, File.basename(fd.get_path), true)
+      File.open(fd.get_path, "r") do |file|
+        document = Document.new(@notebook)
+        document.open(@notebook, file, fd.get_path)
+        @notebook.add_page(document, document.file_name, true)
       end
     end
   end
