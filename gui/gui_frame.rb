@@ -78,12 +78,7 @@ class AppFrame < Frame
     @notebook.add_page(@document, @document.file_name, true, -1)
     
     #set styles
-<<<<<<< HEAD:gui/gui_frame.rb
-    @document.set_style({})
-=======
     @document.set_style
-
->>>>>>> richardeden/master:gui/gui_frame.rb
   end
   
   def onSave
